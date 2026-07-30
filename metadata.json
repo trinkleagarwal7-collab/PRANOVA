@@ -1,0 +1,6 @@
+{
+  "name": "Pranova",
+  "description": "Premium sustainable wellness ecosystem combining natural EarthMat™ products, AI wellness guidance, and circular economy principles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
