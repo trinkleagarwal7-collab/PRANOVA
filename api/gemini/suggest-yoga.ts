@@ -1,12 +1,30 @@
-import { ai, generateContentWithFallback } from "../_lib/gemini";
+import { GoogleGenAI } from "@google/genai";
+
+const apiKey = process.env.GEMINI_API_KEY;
+const ai = apiKey
+  ? new GoogleGenAI({ apiKey, httpOptions: { headers: { "User-Agent": "aistudio-build" } } })
+  : null;
+
+const FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.1-pro-preview", "gemini-3.1-flash-lite", "gemini-flash-latest"];
+
+async function generateContentWithFallback(params: { contents: any; config?: any }) {
+  if (!ai) throw new Error("GoogleGenAI client is not initialized.");
+  let lastError: any = null;
+  for (const modelName of FALLBACK_MODELS) {
+    try {
+      return await ai.models.generateContent({ model: modelName, contents: params.contents, config: params.config });
+    } catch (err: any) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("All fallback Gemini models failed.");
+}
 
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    if (!ai) {
-      return res.status(500).json({ error: "GEMINI_API_KEY environment variable is required." });
-    }
+    if (!ai) return res.status(500).json({ error: "GEMINI_API_KEY environment variable is required." });
 
     const { healthProfile } = req.body;
     const bodyType = healthProfile?.bodyType || "Vata-Pitta";
@@ -56,6 +74,6 @@ The response must be structured to fit their physical needs and support safety. 
     res.status(200).json(JSON.parse(resultText.trim()));
   } catch (error: any) {
     console.error("Yoga Suggestion Gemini Error:", error);
-    res.status(500).json({ error: error.message || "An error occurred compiling customized yoga suggestions." });
+    res.status(500).json({ error: error?.message || String(error) });
   }
 }
