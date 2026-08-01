@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Leaf, Check, Sparkles, AlertCircle, ShoppingBag, ArrowRight, Shield, Globe } from "lucide-react";
+import earthmatEssentialImg from "../assets/images/earthmat_essential_1784473124331.jpg";
+import earthmatProFlowImg from "../assets/images/earthmat_pro_flow_1784473137026.jpg";
 
 interface Product {
   id: string;
@@ -31,7 +33,7 @@ export default function ProductGallery() {
       carbonOffset: "4.5 kg CO2",
       plasticSaved: "1.2 kg PVC",
       imageColor: "bg-[#cca47c]/30",
-      imageUrl: "/src/assets/images/earthmat_essential_1784473124331.jpg",
+      imageUrl: earthmatEssentialImg,
       features: [
         "Sweat-activated grip enhancement",
         "Naturally antimicrobial, non-toxic surface",
@@ -54,7 +56,7 @@ export default function ProductGallery() {
       carbonOffset: "6.2 kg CO2",
       plasticSaved: "1.5 kg PVC",
       imageColor: "bg-[#7fa690]/30",
-      imageUrl: "/src/assets/images/earthmat_pro_flow_1784473137026.jpg",
+      imageUrl: earthmatProFlowImg,
       features: [
         "Laser-etched non-toxic alignment lines",
         "Ultra-dense 6mm joint cushion",
